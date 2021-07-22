@@ -12,6 +12,9 @@ export class ApicategoryService {
   getcategorys(){
     return this.http.get(`${environment.baseurl}/category/all`)
   }
+  getproviders(){
+    return this.http.get(`${environment.baseurl}/provider/all`)
+  }
   getcategoryById(id:any){
     return this.http.get(`${environment.baseurl}/category/getone/${id}`)
   }

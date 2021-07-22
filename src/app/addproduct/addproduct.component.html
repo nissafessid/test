@@ -17,17 +17,25 @@
                 </textarea>
             </div>
             <div class="form-group row">
-                <div class="col-sm-6 mb-3 mb-sm-0">
-                    <select class="form-select" aria-label="Default select example">
-                        <option selected>Id provider</option>
+                <div class="col-sm-6 mb-3 ">
+                    <select class="form-select"  name="id_provider" formControlName="id_provider"  >
+                        <option *ngFor="let provider of listproviders" [value]="provider._id" >{{provider.name}}</option>
                        
                     </select>
                 </div>
-                <div class="col-sm-6">
-                    <select type="password" class="form-control form-control-user" id="exampleRepeatPassword" placeholder="id categorie">
-                        <option selected></option>
+                <div class="col-sm-6 mb-3 ">
+                    <select class="form-select"  name="id_category" formControlName="id_category"  >
+                        <option *ngFor="let category of listcategorys" [value]="category._id" >{{category.title}}</option>
+                       
                     </select>
                 </div>
+
+                <div class="col-sm-6 mb-3 ">
+                    <input type="file" (change)="handleFileInput($event)" 
+                    name="file"  class="form-control form-control-user"
+                        id="exampleRepeatPassword" placeholder="file">
+                </div>
+               
             </div>
             <button type="submit"  class="btn btn-primary btn-user btn-block">
                 Create Product

@@ -1,48 +1,51 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ApiproductService } from 'src/app/services/apiproduct.service';
-import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { AuthentifictionService } from 'src/app/services/authentifiction.service';
 import Swal from 'sweetalert2';
 
-
-
 @Component({
-  selector: 'app-listprod',
-  templateUrl: './listprod.component.html',
-  styleUrls: ['./listprod.component.css']
+  selector: 'app-listuser',
+  templateUrl: './listuser.component.html',
+  styleUrls: ['./listuser.component.css']
 })
-export class ListprodComponent implements OnInit {
-  listproducts:any
-  productForm: FormGroup;
+export class ListuserComponent implements OnInit {
+
+  listusers:any
+  userForm: FormGroup;
   submitted=false
   term_search:any=""
   p:number=1
-  constructor(private formBuilder: FormBuilder,private apidata:ApiproductService, private modalService: NgbModal) { }
+  constructor(private formBuilder: FormBuilder,private apidata:AuthentifictionService, private modalService: NgbModal) { }
 
   ngOnInit(): void {
-    this.getAllproducts()
-    this.productForm = this.formBuilder.group({
+    this.getAllusers()
+    this.userForm = this.formBuilder.group({
       _id: ['', Validators.required],
 
       name: ['', Validators.required],
-      prix: ['', Validators.required],
-      description: ['', Validators.required]
+      email: ['', Validators.required],
+      password: ['', Validators.required],
+      phone: ['', Validators.required],
+      role: ['', Validators.required]
+
+
      
   });
   }
 
 
   
-  getAllproducts(){
-    this.apidata.getproducts().subscribe((res:any)=>{
-      this.listproducts=res["date"]
+  getAllusers(){
+    this.apidata.getusers().subscribe((res:any)=>{
+      this.listusers=res["data"]
       console.log("reponse",res)
     })
   }
 
-  get f() { return this.productForm.controls; }
+  get f() { return this.userForm.controls; }
 
-  deleteproduct(id:any){
+  deleteuser(id:any){
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -53,13 +56,13 @@ export class ListprodComponent implements OnInit {
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.isConfirmed) {
-       this.apidata.deleteproduct(id).subscribe(res=>{
+       this.apidata.deleteuser(id).subscribe(res=>{
         Swal.fire(
           'Deleted!',
-          'Your file has been deleted.',
+          'Your user has been deleted.',
           'success'
         )
-        this.getAllproducts()
+        this.getAllusers()
        })
       }
     })
@@ -68,12 +71,16 @@ export class ListprodComponent implements OnInit {
 
 
   open(content:any,product:any) {
-    this.productForm.setValue({
+    this.userForm.setValue({
       name:product.name,
       _id:product._id,
 
-      description:product.description,
-      prix:product.prix
+      email:product.email,
+      password:product.password,
+      phone:product.phone,
+      role:product.role
+
+
     })
 
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
@@ -82,16 +89,16 @@ export class ListprodComponent implements OnInit {
   }
 
 
-  updateProduct(){
-    this.apidata.updateproduct(this.productForm.value._id,this.productForm.value).subscribe(res=>{
-      console.log(res,"update product")
+  updateuser(){
+    this.apidata.updateuser(this.userForm.value._id,this.userForm.value).subscribe(res=>{
+      console.log(res,"update user")
       Swal.fire(
-        'PRODUCT UPDATE!',
-        'Your product has been updated.',
+        'User UPDATE!',
+        'Your user has been updated.',
         'success'
       )
 
-      this.getAllproducts()
+      this.getAllusers()
      })
   }
 

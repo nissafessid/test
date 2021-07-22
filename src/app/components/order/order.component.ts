@@ -1,43 +1,41 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ApicategoryService } from 'src/app/services/apicategory.service';
+import { ApiorderService } from 'src/app/services/apiorder.service';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-listcategory',
-  templateUrl: './listcategory.component.html',
-  styleUrls: ['./listcategory.component.css']
+  selector: 'app-order',
+  templateUrl: './order.component.html',
+  styleUrls: ['./order.component.css']
 })
-export class ListcategoryComponent implements OnInit {
+export class OrderComponent implements OnInit {
 
-  listcategorys:any
-  categoryForm: FormGroup;
+  listorders:any
+  orderForm: FormGroup;
   submitted=false
-  term_search:any=""
-  p:number=1
-  constructor(private apidata:ApicategoryService,private formBuilder: FormBuilder,private modalService: NgbModal) { }
+  constructor(private apidata:ApiorderService,private formBuilder: FormBuilder,private modalService: NgbModal) { }
 
   ngOnInit(): void {
-    this.getAllcategorys()
-    this.categoryForm = this.formBuilder.group({
+    this.getAllorders()
+    this.orderForm = this.formBuilder.group({
       _id: ['', Validators.required],
 
-      title: ['', Validators.required],
+      date: ['', Validators.required],
      
-      description: ['', Validators.required]
+      price: ['', Validators.required]
      
   });
   }
-  getAllcategorys(){
-    this.apidata.getcategorys().subscribe((res:any)=>{
-      this.listcategorys=res["date"]
+  getAllorders(){
+    this.apidata.getorders().subscribe((res:any)=>{
+      this.listorders=res["data"]
       console.log("reponse",res)
     })
   }
-  get f() { return this.categoryForm.controls; }
+  get f() { return this.orderForm.controls; }
 
-  deletecategory(id:any){
+  deleteorder(id:any){
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -48,23 +46,26 @@ export class ListcategoryComponent implements OnInit {
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.isConfirmed) {
-       this.apidata.deletecategoryt(id).subscribe(res=>{
+       this.apidata.deleteorder(id).subscribe(res=>{
         Swal.fire(
           'Deleted!',
           'Your file has been deleted.',
           'success'
         )
-        this.getAllcategorys()
+        this.getAllorders()
        })
       }
     })
   }
 
-  open(content:any,category:any) {
-    this.categoryForm.setValue({
-      _id:category._id,
-      title:category.title,
-      description:category.description,
+  open(content:any,order:any) {
+    this.orderForm.setValue({
+      _id:order._id,
+      date:order.date,
+      price:order.price,
+     
+
+      
     })
 
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
@@ -73,16 +74,16 @@ export class ListcategoryComponent implements OnInit {
   }
 
 
-  updateCategory(){
-    this.apidata.updatecategory(this.categoryForm.value._id,this.categoryForm.value).subscribe(res=>{
-      console.log(res,"update product")
+  updateorder(){
+    this.apidata.updateorder(this.orderForm.value._id,this.orderForm.value).subscribe(res=>{
+      console.log(res,"update order")
       Swal.fire(
-        'Category UPDATE!',
-        'Your category has been updated.',
+        'order UPDATE!',
+        'Your order has been updated.',
         'success'
       )
 
-      this.getAllcategorys()
+      this.getAllorders()
      })
   }
 
@@ -98,5 +99,6 @@ export class ListcategoryComponent implements OnInit {
       return `with: ${reason}`;
     }
   }
+
 
 }

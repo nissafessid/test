@@ -1,0 +1,132 @@
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Liste Users</h1>
+    <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
+        For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official DataTables documentation</a>.</p>
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4"><div class="row"><div class="col-sm-12 col-md-6"><div class="dataTables_length" id="dataTable_length"><label>Show <select name="dataTable_length" aria-controls="dataTable" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-sm-12 col-md-6"><div id="dataTable_filter" class="dataTables_filter">
+                    <label>Search:
+                        <input type="search" class="form-control form-control-sm" name="term_search" [(ngModel)]="term_search" placeholder="" aria-controls="dataTable"></label></div></div></div><div class="row"><div class="col-sm-12"><table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
+                    <thead>
+                        <tr role="row"><th class="sorting sorting_asc" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 57px;">Id</th>
+                            
+                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 49px;">Email</th>
+                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending" style="width: 68px;">Name</th>
+                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending" style="width: 67px;">Phone</th>
+                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending" style="width: 67px;"> Role</th>
+                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending" style="width: 67px;">Image</th>
+                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 49px;"> Actions</th>
+                        </tr>
+
+                    </thead>
+                    <tfoot>
+                        <tr><th rowspan="1" colspan="1">Id</th>
+                            <th rowspan="1" colspan="1">Email</th>
+                            <th rowspan="1" colspan="1">Name</th>
+                            <th rowspan="1" colspan="1">Phone</th>
+                            <th rowspan="1" colspan="1"> Role</th>
+                            <th rowspan="1" colspan="1">Image</th>
+                            <th rowspan="1" colspan="1">Actions</th>
+                        </tr>
+
+                    </tfoot>
+                    <tbody>
+                           
+                    <tr class="odd" *ngFor="let p of listusers|paginate: { itemsPerPage: 2, currentPage: p }|recherche:term_search;let index=index">
+                        <!-- <th scope="row">{{index+1}}</th> -->
+                            <td class="sorting_1">{{index+1}}</td>
+                            <td>{{p.email}}</td>
+                            <td>{{p.name}}</td>
+                            <td>{{p.phone}}</td>
+                            <td>{{p.role}}</td>
+                            <td><img src="http://localhost:3300/getfile/{{p.image}}" width="50PX" height="50px"> </td>
+                          
+                           <td><a  class="mx-3 btn btn-danger btn-circle"  (click)="deleteuser(p._id)" role="button">
+                                  <i class="fas fa-trash"></i>
+                               </a>
+                               <a  class=" mx-3 btn btn-warning btn-circle"  (click)="open(content,p)" role="button" >
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </a>
+                            <a class="btn btn-info btn-circle"   [routerLink]="['/home/detailuser',p._id]" role="button" >
+                                <i class="fas fa-info-circle"></i>
+                            </a>
+                          </td>
+                        </tr>
+                    </tbody>
+                  
+
+                </table></div></div>
+                <pagination-controls class="page-link" class="text-center"  class="paginate_button page-item previous disabled" (pageChange)="p=$event"></pagination-controls>
+               
+        </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Profile update</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="userForm" (ngSubmit)="updateuser()" >
+      <div class="form-row">
+        
+          <div class="form-group col-5">
+              <label> Email</label>
+              <input type="email" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+              <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                  <div *ngIf="f.email.errors.required">email is required</div>
+              </div>
+          </div>
+          <div class="form-group col-5">
+              <label>password</label>
+              <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+              <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                  <div *ngIf="f.password.errors.required">password is required</div>
+              </div>
+          </div>
+      </div>
+      <div class="form-group">
+          <label>Name</label>
+          <input type="text" formControlName="Name" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.Name.errors }" />
+          <div *ngIf="submitted && f.Name.errors" class="invalid-feedback">
+              <div *ngIf="f.Name.errors.required">Name is required</div>
+              
+          </div>
+      </div>
+      <div class="form-group">
+      <div class="col-sm-6">
+        <input type="number" name="phone" formControlName="phone" class="form-control form-control-user" id="exampleLastName"
+            placeholder="phone">
+       </div>
+     </div>
+     <div class="form-group">
+    <div class="col-sm-6">
+        <input type="text"  name="role" formControlName="role" class="form-control form-control-user"
+            id="exampleRepeatPassword" placeholder="role">
+    </div>
+    </div>
+     
+    
+  </form>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-outline-dark" (click)="updateuser();modal.close('Save click')">Save</button>
+  </div>
+</ng-template>

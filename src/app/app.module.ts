@@ -19,6 +19,16 @@ import { DetailproductComponent } from './components/detailproduct/detailproduct
 import { ListcategoryComponent } from './components/listcategory/listcategory.component';
 import { DetailcategoryComponent } from './components/detailcategory/detailcategory.component';
 import { AddcategoryComponent } from './components/addcategory/addcategory.component';
+import { AdduserComponent } from './components/adduser/adduser.component';
+import { ListuserComponent } from './components/listuser/listuser.component';
+import { DetailuserComponent } from './components/detailuser/detailuser.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { OrderComponent } from './components/order/order.component';
+import { AddorderComponent } from './components/addorder/addorder.component';
+import { RecherchePipe } from './pipes/recherche.pipe';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { Recherche1Pipe } from './pipes/recherche1.pipe';
+import { ProductquantityDirective } from './productquantity.directive';
 
 @NgModule({
   declarations: [
@@ -35,7 +45,17 @@ import { AddcategoryComponent } from './components/addcategory/addcategory.compo
    DetailproductComponent,
    ListcategoryComponent,
    DetailcategoryComponent,
-   AddcategoryComponent
+   AddcategoryComponent,
+   AdduserComponent,
+   ListuserComponent,
+   DetailuserComponent,
+   ProfileComponent,
+   OrderComponent,
+   AddorderComponent,
+   RecherchePipe,
+   Recherche1Pipe,
+   ProductquantityDirective,
+
   ],
   imports: [
     BrowserModule,
@@ -43,6 +63,7 @@ import { AddcategoryComponent } from './components/addcategory/addcategory.compo
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
+    NgxPaginationModule,
     NgbModule
 
   ],
